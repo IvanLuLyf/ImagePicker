@@ -5,13 +5,11 @@
 [![Build Status](https://travis-ci.org/IvanLuLyf/ImagePicker.svg?branch=master)](https://travis-ci.org/IvanLuLyf/ImagePicker)
 [![GitHub](https://img.shields.io/github/license/IvanLuLyf/ImagePicker.svg?color=blue)](https://github.com/IvanLuLyf/ImagePicker/blob/master/LICENSE)
 
-This repo made for using system image picker to select image.
+使用系统图片选择器选择图片.
 
-[中文](README_CN.md)
+## 项目配置
 
-## Configure
-
-Add it in your root build.gradle at the end of repositories:
+添加以下内容到项目的build.gradle文件里面:
 
 ```gradle
 allprojects {
@@ -22,7 +20,7 @@ allprojects {
 }
 ```
 
-Add the dependency
+添加项目依赖
 
 ```gradle
 dependencies {
@@ -30,9 +28,9 @@ dependencies {
 }
 ```
 
-Create a file like```file_paths.xml``` in ```res/xml``` dir.
+在```res/xml```目录下创建文件```file_paths.xml``` .
 
-> Content Sample
+> 内容样例
 
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
@@ -41,15 +39,15 @@ Create a file like```file_paths.xml``` in ```res/xml``` dir.
 </paths>
 ```
 
-You can replace ```[pathname]``` and ```[path]``` to what you like.
+你可以把```[pathname]```和```[path]```换成你要的内容.
 
-For example: 
+例如: 
 
 ```xml
 <external-files-path name="image" path="image" />
 ```
 
-Add the following content in AndroidManifest.xml between tag ```<application></application>```.
+在AndroidManifest.xml的```<application></application>```标记之间添加如下内容.
 
 ```xml
 <provider
@@ -63,13 +61,13 @@ Add the following content in AndroidManifest.xml between tag ```<application></a
 </provider>
 ```
 
-You can replace ```[ProviderName]``` to what you like.For example ```com.test.FileProvider```.
+你可以更换```[ProviderName]```为你想要的内容.例如```com.test.FileProvider```.
 
-```com.test``` can replace with your package name.
+```com.test```可以更换为你自己的包名.
 
-## Usage
+## 使用
 
-> Sample
+> 样例
 
 ```java
 public class MainActivity extends AppCompatActivity {
@@ -81,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        pickImageUtil = new PickImageUtil(this, "[ProviderName]", "[pathname]");
+        pickImageUtil = new PickImageUtil(this, "[ProviderName]", "[pathname]"); //换成你上面定义的内容
 
         final ImageView imgShow = findViewById(R.id.imgShow);
         Button btnAlbum = findViewById(R.id.btnAlbum);
@@ -92,41 +90,41 @@ public class MainActivity extends AppCompatActivity {
         btnAlbum.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                pickImageUtil.selectAlbum(false);   //Pick image from album without crop
+                pickImageUtil.selectAlbum(false);   // 从相册选取图片（不裁剪）
             }
         });
 
         btnCamera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                pickImageUtil.selectCamera(false);  //Pick image from camera without crop
+                pickImageUtil.selectCamera(false);  // 从相机拍摄图片（不裁剪）
             }
         });
 
         btnAlbumCrop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                pickImageUtil.setSize(300, 300).selectAlbum(true); // Pick image from album with crop and size is 300x300
+                pickImageUtil.setSize(300, 300).selectAlbum(true); // 从相册选取图片并裁剪,图片大小为300x300
             }
         });
 
         btnCameraCrop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                pickImageUtil.setSize(300, 300).selectCamera(true);// Pick image from camera with crop and size is 300x300
+                pickImageUtil.setSize(300, 300).selectCamera(true);// 从相机拍摄图片并裁剪,图片大小为300x300
             }
         });
 
-        pickImageUtil.setCallback(new PickImageCallback() { // handle callback
+        pickImageUtil.setCallback(new PickImageCallback() { // 处理返回
             @Override
-            public void onResult(Uri uri, String filePath) {    // You can use uri directly,or use file path
+            public void onResult(Uri uri, String filePath) {    // 你可以直接使用uri或者用文件路径
                 imgShow.setImageURI(uri);
             }
         });
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) { //handle onActivityResult
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) { //处理onActivityResult
         if (!pickImageUtil.onActivityResult(requestCode, resultCode, data))
             super.onActivityResult(requestCode, resultCode, data);
     }
